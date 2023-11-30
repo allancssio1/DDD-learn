@@ -15,6 +15,11 @@ export class Answer extends Entity<AnswerProps> {
     return this.props.content
   }
 
+  set content(content: string) {
+    this.props.content = content
+    this.touch()
+  }
+
   get questionId() {
     return this.props.questionId
   }
@@ -36,15 +41,6 @@ export class Answer extends Entity<AnswerProps> {
     return this.content.substring(0, 120).trimEnd().concat('...')
   }
 
-  set content(content: string) {
-    this.props.content = content
-    this.touch()
-  }
-
-  private touch() {
-    this.props.updatedAt = new Date()
-  }
-
   static create(
     props: Optional<AnswerProps, 'createdAt'>,
     id?: UniqueEntityId,
@@ -58,5 +54,9 @@ export class Answer extends Entity<AnswerProps> {
     )
 
     return answer
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
   }
 }
