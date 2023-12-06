@@ -1,37 +1,41 @@
+import { InMemoryAnswersRepository } from '@/test/repositories/inMemoryAnswersRepository'
+import { EditAnswerUseCase } from './editAnswer'
 import { makeAnswer } from '@/test/factories/makeAnswer'
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
-import { InMemoryAnswersRepository } from '@/test/repositories/inMemoryAnswersRepository'
-import { DeleteAnswerUseCase } from './deleteAnswer'
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
-let sut: DeleteAnswerUseCase
-describe('Find Question By Slug', () => {
+let sut: EditAnswerUseCase
+describe('Edit Answer', () => {
   beforeEach(() => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository()
-    sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
+    sut = new EditAnswerUseCase(inMemoryAnswersRepository)
   })
 
-  test('should be delete question', async () => {
+  test('should be delete answer', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityId('author-1'),
       },
-      new UniqueEntityId('question-1'),
+      new UniqueEntityId('answer-1'),
     )
     await inMemoryAnswersRepository.create(newAnswer)
     await sut.execute({
       authorId: newAnswer.authorId.toString(),
-      id: newAnswer.id.toString(),
+      questoinId: newAnswer.id.toString(),
+      content: 'editting answer content',
     })
-    expect(inMemoryAnswersRepository.items).toHaveLength(0)
+
+    expect(inMemoryAnswersRepository.items[0]).toMatchObject({
+      content: 'editting answer content',
+    })
   })
 
-  test('should not be delete question if action author diff question author', async () => {
+  test('should not be delete answer if action author diff answer author', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityId('author-1'),
       },
-      new UniqueEntityId('question-1'),
+      new UniqueEntityId('answer-1'),
     )
     await inMemoryAnswersRepository.create(newAnswer)
 
@@ -39,7 +43,8 @@ describe('Find Question By Slug', () => {
       async () =>
         await sut.execute({
           authorId: 'author-2',
-          id: newAnswer.id.toString(),
+          questoinId: newAnswer.id.toString(),
+          content: 'editting answer content',
         }),
     ).rejects.toThrow(new Error('Not allowed'))
   })
