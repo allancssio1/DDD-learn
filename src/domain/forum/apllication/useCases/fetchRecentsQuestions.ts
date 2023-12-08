@@ -12,7 +12,9 @@ interface FetchRecentsQuestionsUseCaseResponse {
 export class FetchRecentQuestionsUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
 
-  async execute({ page }: FetchRecentsQuestionsUseCaseRequest) {
+  async execute({
+    page,
+  }: FetchRecentsQuestionsUseCaseRequest): Promise<FetchRecentsQuestionsUseCaseResponse> {
     const questions = await this.questionRepository.findManyRecent({ page })
 
     if (!questions || questions.length <= 0)

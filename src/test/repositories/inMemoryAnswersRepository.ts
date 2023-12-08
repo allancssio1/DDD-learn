@@ -1,10 +1,11 @@
+import { PaginationParams } from '@/core/repositories/paginationParams'
 import { AnswerRepository } from '@/domain/forum/apllication/repositories/answerRepository'
 import { Answer } from '@/domain/forum/enterprise/entities/Answer'
 
 export class InMemoryAnswersRepository implements AnswerRepository {
   public items: Answer[] = []
 
-  async create(answer: Answer): Promise<void> {
+  async create(answer: Answer) {
     this.items.push(answer)
   }
 
@@ -13,7 +14,7 @@ export class InMemoryAnswersRepository implements AnswerRepository {
     return anser ?? null
   }
 
-  async delete(answer: Answer): Promise<void> {
+  async delete(answer: Answer) {
     const itemIndex = await this.items.findIndex(
       (item) => item.id.toString() === answer.id.toString(),
     )
@@ -21,11 +22,19 @@ export class InMemoryAnswersRepository implements AnswerRepository {
     this.items.splice(itemIndex, 1)
   }
 
-  async save(answer: Answer): Promise<void> {
+  async save(answer: Answer) {
     const itemIndex = await this.items.findIndex(
       (item) => item.id.toString() === answer.id.toString(),
     )
 
     this.items[itemIndex] = answer
+  }
+
+  async findManyByQuestionId(quastionId: string, { page }: PaginationParams) {
+    const answers = this.items
+      .filter((item) => item.questionId.toString() === quastionId)
+      .slice((page - 1) * 20, page * 20)
+
+    return answers
   }
 }

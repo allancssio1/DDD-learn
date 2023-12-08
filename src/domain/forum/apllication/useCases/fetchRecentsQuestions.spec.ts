@@ -1,5 +1,5 @@
 import { InMemoryQuestionsRepository } from '@/test/repositories/inMemoryQuestionsRepository'
-import { FetchRecentQuestionsUseCase } from './fetchRecentQuestions'
+import { FetchRecentQuestionsUseCase } from './fetchRecentsQuestions'
 import { makeQuestion } from '@/test/factories/makeQuestion'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
