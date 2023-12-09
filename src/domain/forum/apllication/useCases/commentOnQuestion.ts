@@ -1,20 +1,19 @@
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
-import { Question } from '../../enterprise/entities/question'
 import { QuestionComment } from '../../enterprise/entities/questionComment'
 import { QuestionsRepository } from '../repositories/questionsRepository'
 import { QuestionCommentsRepository } from '../repositories/questionCommentsRepository'
 
-interface CommentOnQuestoinRequest {
+interface CommentOnQuestionRequest {
   authorId: string
   questionId: string
   content: string
 }
 
-interface CommentOnQuestoinResponse {
+interface CommentOnQuestionResponse {
   questionComment: QuestionComment
 }
 
-export class CommentOnQuestoin {
+export class CommentOnQuestion {
   constructor(
     private questionsRepository: QuestionsRepository,
     private questionCommentRepository: QuestionCommentsRepository,
@@ -24,7 +23,7 @@ export class CommentOnQuestoin {
     authorId,
     content,
     questionId,
-  }: CommentOnQuestoinRequest): Promise<CommentOnQuestoinResponse> {
+  }: CommentOnQuestionRequest): Promise<CommentOnQuestionResponse> {
     const question = await this.questionsRepository.findById(questionId)
 
     if (!question) throw new Error('Question not found.')
@@ -34,6 +33,8 @@ export class CommentOnQuestoin {
       content,
       questionId: new UniqueEntityId(questionId),
     })
+
+    await this.questionCommentRepository.create(questionComment)
 
     return { questionComment }
   }
