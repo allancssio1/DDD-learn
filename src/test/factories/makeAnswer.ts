@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
-import { Answer, AnswerProps } from '@/domain/forum/enterprise/entities/Answer'
+import { Answer, AnswerProps } from '@/domain/forum/enterprise/entities/answer'
 import { faker } from '@faker-js/faker'
 
 export function makeAnswer(

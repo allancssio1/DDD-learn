@@ -1,5 +1,5 @@
 import { PaginationParams } from '@/core/repositories/paginationParams'
-import { Answer } from '../../enterprise/entities/Answer'
+import { Answer } from '../../enterprise/entities/answer'
 
 export interface AnswerRepository {
   create(answer: Answer): Promise<void>

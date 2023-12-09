@@ -3,7 +3,7 @@ import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
 import {
   Question,
   QuestionProps,
-} from '@/domain/forum/enterprise/entities/Question'
+} from '@/domain/forum/enterprise/entities/question'
 import { Slug } from '@/domain/forum/enterprise/entities/valueObjects/slug'
 
 export function makeQuestion(
