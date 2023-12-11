@@ -1,4 +1,3 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
 import { Optional } from '@/core/types/optional'
 import { Comment, CommentProps } from './comment'
