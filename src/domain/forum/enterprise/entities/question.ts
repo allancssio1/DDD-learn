@@ -63,7 +63,7 @@ export class Question extends Entity<QuestionProps> {
     return dayjs().diff(this.createdAt, 'days') >= 3
   }
 
-  get excerpt() {
+  get except() {
     // 120 caracteries e ...
     return this.content.substring(0, 120).trimEnd().concat('...')
   }

@@ -32,7 +32,7 @@ export abstract class Comment<
     return this.props.updatedAt
   }
 
-  get excerpt() {
+  get except() {
     // 120 caracteries e ...
     return this.content.substring(0, 120).trimEnd().concat('...')
   }
