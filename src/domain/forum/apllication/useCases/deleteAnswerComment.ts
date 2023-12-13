@@ -1,3 +1,4 @@
+import { Either, rigth } from '@/core/either'
 import { AnswerCommentsRepository } from '../repositories/anserCommentsRepository'
 
 interface DeleteAnswerCommentUseCaseRequest {
@@ -5,12 +6,16 @@ interface DeleteAnswerCommentUseCaseRequest {
   authorId: string
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+type DeleteAnswerCommentUseCaseResponse = Either<string, {}>
+
 export class DeleteAnswerCommentUseCase {
   constructor(private answerCommentRepository: AnswerCommentsRepository) {}
+
   async execute({
     questoinCommentId,
     authorId,
-  }: DeleteAnswerCommentUseCaseRequest): Promise<void> {
+  }: DeleteAnswerCommentUseCaseRequest): Promise<DeleteAnswerCommentUseCaseResponse> {
     const answercomment =
       await this.answerCommentRepository.findById(questoinCommentId)
 
@@ -20,5 +25,7 @@ export class DeleteAnswerCommentUseCase {
       throw new Error('Not allowed')
 
     await this.answerCommentRepository.delete(answercomment)
+
+    return rigth({})
   }
 }
