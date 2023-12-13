@@ -2,6 +2,7 @@ import { InMemoryAnswerCommentsReposiroty } from '@/test/repositories/inMemoryAn
 import { DeleteAnswerCommentUseCase } from './deleteAnswerComment'
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
 import { makeAnswerComment } from '@/test/factories/makeAnswerComment'
+import { NotAllowedError } from './errors/notAllowedError'
 
 let inMemoryAnswerCommentRepository: InMemoryAnswerCommentsReposiroty
 let sut: DeleteAnswerCommentUseCase
@@ -35,12 +36,12 @@ describe('Delete Answer Comment', () => {
     )
     await inMemoryAnswerCommentRepository.create(newAnswerComment)
 
-    expect(
-      async () =>
-        await sut.execute({
-          authorId: 'author-2',
-          questoinCommentId: newAnswerComment.id.toString(),
-        }),
-    ).rejects.toThrow(new Error('Not allowed'))
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questoinCommentId: newAnswerComment.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })
