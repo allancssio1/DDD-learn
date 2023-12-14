@@ -1,14 +1,13 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, rigth } from '@/core/either'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questionsRepository'
-import { ResourceNotFoundError } from './errors/resourceNotFoundError'
 
 interface FetchRecentsQuestionsUseCaseRequest {
   page: number
 }
 
 type FetchRecentsQuestionsUseCaseResponse = Either<
-  ResourceNotFoundError,
+  null,
   {
     questions: Question[]
   }
@@ -21,9 +20,6 @@ export class FetchRecentQuestionsUseCase {
     page,
   }: FetchRecentsQuestionsUseCaseRequest): Promise<FetchRecentsQuestionsUseCaseResponse> {
     const questions = await this.questionRepository.findManyRecent({ page })
-
-    if (!questions || questions.length <= 0)
-      return left(new ResourceNotFoundError())
 
     return rigth({ questions })
   }

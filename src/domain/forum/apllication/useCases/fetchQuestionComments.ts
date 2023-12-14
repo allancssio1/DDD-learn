@@ -1,7 +1,6 @@
-import { Either, left, rigth } from '@/core/either'
+import { Either, rigth } from '@/core/either'
 import { QuestionComment } from '../../enterprise/entities/questionComment'
 import { QuestionCommentsRepository } from '../repositories/questionCommentsRepository'
-import { ResourceNotFoundError } from './errors/resourceNotFoundError'
 
 interface FetchQuestionCommentsUseCaseRequest {
   page: number
@@ -9,7 +8,7 @@ interface FetchQuestionCommentsUseCaseRequest {
 }
 
 type FetchQuestionCommentsUseCaseResponse = Either<
-  ResourceNotFoundError,
+  null,
   {
     questionComments: QuestionComment[]
   }
@@ -26,9 +25,6 @@ export class FetchQuestionCommentsUseCase {
       await this.questionCommentsRepository.findManyByQuestionId(questionId, {
         page,
       })
-
-    if (!questionComments || questionComments.length <= 0)
-      return left(new ResourceNotFoundError())
 
     return rigth({ questionComments })
   }
