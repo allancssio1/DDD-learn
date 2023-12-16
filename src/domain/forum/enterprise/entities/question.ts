@@ -3,6 +3,7 @@ import { Slug } from './valueObjects/slug'
 import { UniqueEntityId } from '@/core/entities/uniqueEntityId'
 import { Optional } from '@/core/types/optional'
 import dayjs from 'dayjs'
+import { QuesitonAttachment } from './questionAttachment'
 
 export interface QuestionProps {
   authorId: UniqueEntityId
@@ -10,6 +11,7 @@ export interface QuestionProps {
   title: string
   slug: Slug
   content: string
+  attachments: QuesitonAttachment[]
   createdAt: Date
   updatedAt?: Date
 }
@@ -17,6 +19,14 @@ export interface QuestionProps {
 export class Question extends AggregateRoot<QuestionProps> {
   get authorId() {
     return this.props.authorId
+  }
+
+  get attachments() {
+    return this.props.attachments
+  }
+
+  set attachments(attachments: QuesitonAttachment[]) {
+    this.props.attachments = attachments
   }
 
   get bestAnswerId() {
@@ -73,7 +83,7 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   static create(
-    props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+    props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>,
     id?: UniqueEntityId,
   ) {
     const question = new Question(
@@ -81,6 +91,7 @@ export class Question extends AggregateRoot<QuestionProps> {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
         createdAt: props.createdAt ?? new Date(),
+        attachments: props.attachments ?? [],
       },
       id,
     )

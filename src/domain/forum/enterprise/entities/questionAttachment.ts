@@ -15,7 +15,7 @@ export class QuesitonAttachment extends Entity<QuesitonAttachmentProps> {
     return this.props.attachmentId
   }
 
-  async create(props: QuesitonAttachmentProps, id?: UniqueEntityId) {
+  static create(props: QuesitonAttachmentProps, id?: UniqueEntityId) {
     return new QuesitonAttachment(props, id)
   }
 }
